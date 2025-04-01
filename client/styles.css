@@ -1,0 +1,35 @@
+body {
+    font-family: Arial, sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+.task-form {
+    display: flex;
+    margin-bottom: 20px;
+}
+.task-input {
+    flex-grow: 1;
+    padding: 8px;
+    font-size: 16px;
+}
+.add-btn {
+    padding: 8px 16px;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+.add-btn:hover {
+    background: #45a049;
+}
+.tasks-list {
+    list-style: none;
+    padding: 0;
+}
+.task-item {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+}
