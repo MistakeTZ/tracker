@@ -46,11 +46,31 @@ document.addEventListener('DOMContentLoaded', () => {
   
     // Отрисовка задач
     function renderTasks(tasks) {
-      tasksList.innerHTML = tasks.map(task => `
-        <li class="task-item">
-          <span>${task.title}</span>
-          <button data-id="${task.id}">Удалить</button>
-        </li>
-      `).join('');
+        tasksList.innerHTML = tasks.map(task => `
+            <li class="task-item">
+                <span>${task.title}</span>
+                <button class="delete-btn" data-id="${task.id}">Удалить</button>
+            </li>
+        `).join('');
+  
+    // Навешиваем обработчики удаления
+    document.querySelectorAll('.delete-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const taskId = btn.dataset.id;
+        await deleteTask(taskId);
+        loadTasks(); // Перезагружаем список
+      });
+    });
     }
-  });
+  
+  // Новая функция для удаления задачи
+  async function deleteTask(taskId) {
+    try {
+      await fetch(`http://localhost:5000/tasks/${taskId}`, {
+        method: 'DELETE'
+      });
+    } catch (error) {
+      console.error('Ошибка удаления задачи:', error);
+    }
+  }
+});

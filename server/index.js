@@ -29,6 +29,11 @@ app.post('/new_task', async (req, res) => {
         alert('Введите текст задачи!');
         return;
       }
+      let tasks = await pool.query('SELECT COUNT(*) FROM tasks WHERE title = $1', [title]);
+      if (tasks.rows[0].count > 0) {
+        alert('Задача с таким названием уже существует!');
+        return;
+      }
       const newTask = await pool.query(
         'INSERT INTO tasks (title) VALUES($1) RETURNING *',
         [title]
@@ -40,7 +45,20 @@ app.post('/new_task', async (req, res) => {
     }
   });
 
-// Все остальные GET-запросы → index.html (SPA fallback)
+// Удаление задачи
+// Удаление задачи
+app.delete('/tasks/:id', async (req, res) => {
+    try {
+      const { id } = req.params;
+      await pool.query('DELETE FROM tasks WHERE id = $1', [id]);
+      res.json({ message: 'Task deleted' });
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server Error');
+    }
+});
+
+// Отображение index.html
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/index.html'));
 });
