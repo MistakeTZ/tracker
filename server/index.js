@@ -58,6 +58,22 @@ app.delete('/tasks/:id', async (req, res) => {
     }
 });
 
+// Обновление статуса задачи
+app.patch('/tasks/:id', async (req, res) => {
+  try {
+      const { id } = req.params;
+      const { is_completed } = req.body;
+      const updatedTask = await pool.query(
+          'UPDATE tasks SET is_completed = $1 WHERE id = $2 RETURNING *',
+          [is_completed, id]
+      );
+      res.json(updatedTask.rows[0]);
+  } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server Error');
+  }
+});
+
 // Отображение index.html
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/index.html'));

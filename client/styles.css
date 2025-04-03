@@ -45,3 +45,25 @@ body {
 .delete-btn:hover {
     background: #d32f2f;
 }
+
+.completed-tasks-list {
+    list-style: none;
+    padding: 0;
+    opacity: 0.6;
+}
+
+.task-item.completed {
+    text-decoration: line-through;
+    color: #777;
+}
+
+.completed-checkbox {
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+h2 {
+    margin-top: 30px;
+    color: #666;
+    font-size: 1.2em;
+}
