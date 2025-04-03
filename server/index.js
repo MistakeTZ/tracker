@@ -13,7 +13,7 @@ app.use(express.static(path.join(__dirname, '../client')));
 // Получение всех задач
 app.get('/tasks', async (req, res) => {
   try {
-    const allTasks = await pool.query('SELECT * FROM tasks');
+    const allTasks = await pool.query('SELECT *, CASE WHEN is_completed THEN updated_at ELSE created_at END AS display_time FROM tasks ORDER BY is_completed, display_time DESC');
     res.json(allTasks.rows);
   } catch (err) {
     console.error(err.message);
@@ -46,7 +46,6 @@ app.post('/new_task', async (req, res) => {
   });
 
 // Удаление задачи
-// Удаление задачи
 app.delete('/tasks/:id', async (req, res) => {
     try {
       const { id } = req.params;
@@ -64,7 +63,7 @@ app.patch('/tasks/:id', async (req, res) => {
       const { id } = req.params;
       const { is_completed } = req.body;
       const updatedTask = await pool.query(
-          'UPDATE tasks SET is_completed = $1 WHERE id = $2 RETURNING *',
+          'UPDATE tasks SET is_completed = $1, updated_at = CURRENT_TIMESTAMP WHERE id = $2 RETURNING *',
           [is_completed, id]
       );
       res.json(updatedTask.rows[0]);

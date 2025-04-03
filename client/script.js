@@ -89,19 +89,39 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Создание элемента задачи
   function createTaskElement(task) {
-      const taskItem = document.createElement('li');
-      taskItem.className = `task-item ${task.is_completed ? 'completed' : ''}`;
+    const taskItem = document.createElement('li');
+    taskItem.className = `task-item ${task.is_completed ? 'completed' : ''}`;
+    
+    // Форматируем дату
+    const timeText = task.is_completed 
+        ? `Выполнено: ${formatDate(task.completed_at || task.updated_at)}`
+        : `Создано: ${formatDate(task.created_at)}`;
+    
+    taskItem.innerHTML = `
+        <div>
+            <input type="checkbox" class="completed-checkbox" 
+                   data-id="${task.id}" ${task.is_completed ? 'checked' : ''}>
+            <span>${task.title}</span>
+            <div class="task-time">${timeText}</div>
+        </div>
+        <button class="delete-btn" data-id="${task.id}">Удалить</button>
+    `;
+    
+    return taskItem;
+  }
+
+  // Функция для форматирования даты
+  function formatDate(dateString) {
+      if (!dateString) return 'неизвестно';
       
-      taskItem.innerHTML = `
-          <div>
-              <input type="checkbox" class="completed-checkbox" 
-                     data-id="${task.id}" ${task.is_completed ? 'checked' : ''}>
-              <span>${task.title}</span>
-          </div>
-          <button class="delete-btn" data-id="${task.id}">Удалить</button>
-      `;
-      
-      return taskItem;
+      const date = new Date(dateString);
+      return date.toLocaleString('ru-RU', {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+      });
   }
 
   // Функция для удаления задачи

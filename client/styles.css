@@ -53,8 +53,11 @@ body {
 }
 
 .task-item.completed {
-    text-decoration: line-through;
     color: #777;
+}
+
+.task-item.completed div {
+    text-decoration: line-through;
 }
 
 .completed-checkbox {
@@ -66,4 +69,15 @@ h2 {
     margin-top: 30px;
     color: #666;
     font-size: 1.2em;
+}
+
+.task-time {
+    font-size: 0.8em;
+    color: #888;
+    margin-top: 5px;
+    margin-left: 28px; /* Чтобы выровнять с текстом задачи */
+}
+
+.completed-tasks-list .task-time {
+    color: #aaa;
 }
