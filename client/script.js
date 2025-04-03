@@ -1,4 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
+  const serverAddress = "http://localhost:5000/";
+
   const taskInput = document.querySelector('.task-input');
   const addBtn = document.querySelector('.add-btn');
   const tasksList = document.querySelector('.tasks-list');
@@ -24,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Функция загрузки задач
   async function loadTasks() {
       try {
-          const response = await fetch('http://localhost:5000/tasks');
+          const response = await fetch(serverAddress + 'tasks');
           const tasks = await response.json();
           renderTasks(tasks);
       } catch (error) {
@@ -35,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Функция добавления задачи
   async function addTask(title) {
       try {
-          await fetch('http://localhost:5000/new_task', {
+          await fetch(serverAddress + 'new_task', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ title })
@@ -127,7 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Функция для удаления задачи
   async function deleteTask(taskId) {
       try {
-          await fetch(`http://localhost:5000/tasks/${taskId}`, {
+          await fetch(serverAddress + `tasks/${taskId}`, {
               method: 'DELETE'
           });
       } catch (error) {
@@ -138,7 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Новая функция для обновления статуса задачи
   async function updateTaskStatus(taskId, isCompleted) {
       try {
-          await fetch(`http://localhost:5000/tasks/${taskId}`, {
+          await fetch(serverAddress + `tasks/${taskId}`, {
               method: 'PATCH',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ is_completed: isCompleted })
